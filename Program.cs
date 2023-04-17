@@ -1,65 +1,68 @@
-﻿const int MaxPlayerHP = 15;
-const int MaxLuciferHP = 30;
-const int MaxRafaelHP = 20;
-const string ElectricCageSpellNumber = "1";
-const string ElectricCageSpellName = "Electric Cage";
-const int ElectricCagePercentToFinishing = 40;
-const int ElectricCageVarPlayerLostHP = 5;
-const string HolyRaySpellNumber = "2";
-const string HolyRaySpellName = "Holy Ray";
-const int HolyRayDamage = 4;
-const int HolyRayDamageToPlayer = 8;
-const string ElectricRaySpellNumber = "3";
-const string ElectricRaySpellName = "Electric Ray";
-const int ElectricRayDamage = 1;
-const int ElectricRayDamageStack = 1;
-const string RainOfPoisonArrowsSpellNumber = "4";
-const string RainOfPoisonArrowsSpellName = "Rain of Poison Arrows";
-const int RainOfPoisonArrowsDamage = 3;
-const int RainOfPoisonArrowsTimeDamage = 2;
-const string HolyWaterSpellNumber = "5";
-const string HolyWaterSpellName = "Holy Water";
-const string DemonType = "[Демон]";
-const string PoisonType = "[Ядовитый]";
-const string AngelType = "[Ангел]";
-const string ChoiseToLucifer = "1";
-const string ChoiseToRafael = "2";
-const int RafaelAuraDamage = 2;
+﻿const string ComandElectricCageSpellNumber = "1";
+const string ComandHolyRaySpellNumber = "2";
+const string ComandElectricRaySpellNumber = "3";
+const string ComandRainOfPoisonArrowsSpellNumber = "4";
+const string ComandHolyWaterSpellNumber = "5";
+const string ComandChoiseToLucifer = "1";
+const string ComandChoiseToRafael = "2";
 
+int maxPlayerHP = 15;
+int maxLuciferHP = 30;
+int maxRafaelHP = 20;
 int bossHP = 30;
 int playerHP = 15;
 int lifeForDeath = 0;
 int useToHolyWater = 2;
 int stacksInElectricRay = 0;
-bool bossDemonType = false;
-bool bossPoisonType = false;
-bool bossAngelType = false;
-bool poisonAttackToPlayer = false;
-bool poisonAttackToBoss = false;
+bool isbossDemonType = false;
+bool isbossPoisonType = false;
+bool isbossAngelType = false;
+bool ispoisonAttackToPlayer = false;
+bool ispoisonAttackToBoss = false;
 string bossChoice = "0";
 int maxBossHP = 0;
+string electricCageSpellName = "Electric Cage";
+string electricCagePercentToFinishing = "40";
+int electricCageVarPlayerLostHP = 5;
+string holyRaySpellName = "Holy Ray";
+int holyRayDamage = 4;
+int holyRayDamageToPlayer = 8;
+string electricRaySpellName = "Electric Ray";
+int electricRayDamage = 1;
+int electricRayDamageStack = 1;
+string rainOfPoisonArrowsSpellName = "Rain of Poison Arrows";
+int rainOfPoisonArrowsDamage = 3;
+int rainOfPoisonArrowsTimeDamage = 2;
+string holyWaterSpellName = "Holy Water";
+string demonType = "[Демон]";
+string poisonType = "[Ядовитый]";
+string angelType = "[Ангел]";
+int rafaelAuraDamage = 2;
+float electricCageFinishing = 0.4f;
 
-while (bossChoice != "1" && bossChoice != "2")
+while (bossChoice != ComandChoiseToLucifer && bossChoice != ComandChoiseToRafael)
 {
-    Console.WriteLine($"Выберите, против какого босса вы хотите сражаться.\n1: Люцифер, имеет тип {DemonType} и {PoisonType}, {MaxLuciferHP} хп и заклинание {RainOfPoisonArrowsSpellName}" +
-    $", у которой {RainOfPoisonArrowsDamage} урона и {RainOfPoisonArrowsTimeDamage} продолжительного урона." +
-    $"\n2: Рафаэль, имеет тип {AngelType}, {MaxRafaelHP} хп и заклинание {HolyWaterSpellName}, которая постоянно восстанавливает себе все хп, для неё использования неограничены," +
+    Console.WriteLine($"Выберите, против какого босса вы хотите сражаться.\n{ComandChoiseToLucifer}: Люцифер, имеет тип {demonType} и {poisonType}, {maxLuciferHP} хп и заклинание {rainOfPoisonArrowsSpellName}" +
+    $", у которой {rainOfPoisonArrowsDamage} урона и {rainOfPoisonArrowsTimeDamage} продолжительного урона." +
+    $"\n{ComandChoiseToRafael}: Рафаэль, имеет тип {angelType}, {maxRafaelHP} хп и заклинание {holyWaterSpellName}, которая постоянно восстанавливает себе все хп, для неё использования неограничены," +
     $" так же, у неё есть аура, которая наносит на поле боя 2 урона всем её врагам.");
     bossChoice = Console.ReadLine();
 
     switch (bossChoice)
     {
-        case ChoiseToLucifer:
-            bossDemonType = true;
-            bossPoisonType = true;
-            maxBossHP = MaxLuciferHP;
+        case ComandChoiseToLucifer:
+            isbossDemonType = true;
+            isbossPoisonType = true;
+            maxBossHP = maxLuciferHP;
             bossHP = maxBossHP;
             break;
-        case ChoiseToRafael:
-            bossAngelType = true;
-            maxBossHP = MaxRafaelHP;
+
+        case ComandChoiseToRafael:
+            isbossAngelType = true;
+            maxBossHP = maxRafaelHP;
             bossHP = maxBossHP;
             break;
+
         default:
             Console.WriteLine("Такого номера на выбор тебе не давал");
             break;
@@ -72,21 +75,21 @@ while (bossHP > lifeForDeath && playerHP > lifeForDeath)
 {
     Console.WriteLine($"У вас {playerHP} хп. У босса {bossHP} хп.");
     Console.WriteLine($"Выберите, какое заклинание вы хотите использовать." +
-        $"\n{ElectricCageSpellNumber}: {ElectricCageSpellName} - добивает цель, если у той осталось {ElectricCagePercentToFinishing}% или меньше здоровья, иначе не работает." +
-        $" Вы теряете {ElectricCageVarPlayerLostHP} хп" +
-        $"\n{HolyRaySpellNumber}: {HolyRaySpellName} - наносит цели {HolyRayDamage} урона, так же, если цель {DemonType}," +
-        $" наносит урон еще раз, а если {AngelType}, вы теряете {HolyRayDamageToPlayer} хп." +
-        $"\n{ElectricRaySpellNumber}: {ElectricRaySpellName} - наносит цели {ElectricRayDamage} урон." +
-        $" Так же, цель всегда получает на {ElectricRayDamageStack} урон больше, но не от этого заклинания, так же не работает на урон по себе." +
-        $"\n{RainOfPoisonArrowsSpellNumber}: {RainOfPoisonArrowsSpellName} - наносит цели {RainOfPoisonArrowsDamage} урон," +
-        $" так же, если цель не {PoisonType}, цель теряет по {RainOfPoisonArrowsTimeDamage} хп каждый ваш ход. Не стакается." +
-        $"\n{HolyWaterSpellNumber}: {HolyWaterSpellName} - вы полностью исцеляетесь. Можно использовать {useToHolyWater} раз.");
+        $"\n{ComandElectricCageSpellNumber}: {electricCageSpellName} - добивает цель, если у той осталось {electricCagePercentToFinishing}% или меньше здоровья, иначе не работает." +
+        $" Вы теряете {electricCageVarPlayerLostHP} хп" +
+        $"\n{ComandHolyRaySpellNumber}: {holyRaySpellName} - наносит цели {holyRayDamage} урона, так же, если цель {demonType}," +
+        $" наносит урон еще раз, а если {angelType}, вы теряете {holyRayDamageToPlayer} хп." +
+        $"\n{ComandElectricRaySpellNumber}: {electricRaySpellName} - наносит цели {electricRayDamage} урон." +
+        $" Так же, цель всегда получает на {electricRayDamageStack} урон больше, но не от этого заклинания, так же не работает на урон по себе." +
+        $"\n{ComandRainOfPoisonArrowsSpellNumber}: {rainOfPoisonArrowsSpellName} - наносит цели {rainOfPoisonArrowsDamage} урон," +
+        $" так же, если цель не {poisonType}, цель теряет по {rainOfPoisonArrowsTimeDamage} хп каждый ваш ход. Не стакается." +
+        $"\n{ComandHolyWaterSpellNumber}: {holyWaterSpellName} - вы полностью исцеляетесь. Можно использовать {useToHolyWater} раз.");
     string chooseToSpell = Console.ReadLine();
 
     switch (chooseToSpell)
     {
-        case ElectricCageSpellNumber:
-            float checkPercentHP = (maxBossHP / 100.0f) * ElectricCagePercentToFinishing;
+        case ComandElectricCageSpellNumber:
+            float checkPercentHP = maxBossHP * electricCageFinishing;
 
             if (bossHP <= checkPercentHP)
             {
@@ -95,63 +98,71 @@ while (bossHP > lifeForDeath && playerHP > lifeForDeath)
             }
             else if (bossHP > checkPercentHP)
             {
-                Console.WriteLine($"Вы не смогли добить босса, у него больше, чем {ElectricCagePercentToFinishing}% хп.");
+                Console.WriteLine($"Вы не смогли добить босса, у него больше, чем {electricCagePercentToFinishing}% хп.");
             }
-            playerHP -= ElectricCageVarPlayerLostHP;
-            Console.WriteLine($"Вы потеряли {ElectricCageVarPlayerLostHP} хп.");
-            break;
-        case HolyRaySpellNumber:
-            bossHP -= (HolyRayDamage+ stacksInElectricRay);
 
-            if (bossDemonType)
+            playerHP -= electricCageVarPlayerLostHP;
+            Console.WriteLine($"Вы потеряли {electricCageVarPlayerLostHP} хп.");
+            break;
+
+        case ComandHolyRaySpellNumber:
+            bossHP -= holyRayDamage+ stacksInElectricRay;
+
+            if (isbossDemonType)
             {
-                bossHP -= (HolyRayDamage + stacksInElectricRay);
+                bossHP -= holyRayDamage + stacksInElectricRay;
             }
-            else if (bossAngelType)
+            else if (isbossAngelType)
             { 
-                playerHP -= HolyRayDamageToPlayer;
+                playerHP -= holyRayDamageToPlayer;
             }
-            break;
-        case ElectricRaySpellNumber:
-            bossHP -= ElectricRayDamage;
-            stacksInElectricRay += ElectricRayDamageStack;
-            break;
-        case RainOfPoisonArrowsSpellNumber:
-            bossHP -= (RainOfPoisonArrowsDamage + stacksInElectricRay);
 
-            if (bossPoisonType == false)
-            {
-                poisonAttackToBoss = true;
-            }
             break;
-        case HolyWaterSpellNumber:
-            playerHP = MaxPlayerHP;
+
+        case ComandElectricRaySpellNumber:
+            bossHP -= electricRayDamage;
+            stacksInElectricRay += electricRayDamageStack;
+            break;
+
+        case ComandRainOfPoisonArrowsSpellNumber:
+            bossHP -= rainOfPoisonArrowsDamage + stacksInElectricRay;
+
+            if (isbossPoisonType == false)
+            {
+                ispoisonAttackToBoss = true;
+            }
+
+            break;
+
+        case ComandHolyWaterSpellNumber:
+            playerHP = maxPlayerHP;
             useToHolyWater -= 1;
             break;
+
         default:
             Console.WriteLine("Нет такого заклинания, вы потратили ход в пустую");
             break;
     }
 
-    if (bossDemonType)
+    if (isbossDemonType)
     {
-        playerHP -= RainOfPoisonArrowsDamage;
-        poisonAttackToPlayer = true;
+        playerHP -= rainOfPoisonArrowsDamage;
+        ispoisonAttackToPlayer = true;
     }
-    else if (bossAngelType)
+    else if (isbossAngelType)
     {
-        playerHP -= RafaelAuraDamage;
+        playerHP -= rafaelAuraDamage;
         bossHP = maxBossHP;
     }  
 
-    if (poisonAttackToBoss)
+    if (ispoisonAttackToBoss)
     {
-        bossHP -= (RainOfPoisonArrowsTimeDamage + stacksInElectricRay);
+        bossHP -= rainOfPoisonArrowsTimeDamage + stacksInElectricRay;
     }
     
-    if (poisonAttackToPlayer)
+    if (ispoisonAttackToPlayer)
     {
-        playerHP -= RainOfPoisonArrowsTimeDamage;
+        playerHP -= rainOfPoisonArrowsTimeDamage;
     }
 
     Console.Clear();
