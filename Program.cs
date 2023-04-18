@@ -14,15 +14,16 @@ int playerHP = 15;
 int lifeForDeath = 0;
 int useToHolyWater = 2;
 int stacksInElectricRay = 0;
-bool isbossDemonType = false;
-bool isbossPoisonType = false;
-bool isbossAngelType = false;
-bool ispoisonAttackToPlayer = false;
-bool ispoisonAttackToBoss = false;
+bool isBossDemonType = false;
+bool isBossPoisonType = false;
+bool isBossAngelType = false;
+bool isPoisonAttackToPlayer = false;
+bool isPoisonAttackToBoss = false;
 string bossChoice = "0";
 int maxBossHP = 0;
 string electricCageSpellName = "Electric Cage";
-string electricCagePercentToFinishing = "40";
+int electricCagePercentToFinishing = 40;
+float numberToCalculateForElectricCage = 100.0f;
 int electricCageVarPlayerLostHP = 5;
 string holyRaySpellName = "Holy Ray";
 int holyRayDamage = 4;
@@ -38,7 +39,6 @@ string demonType = "[Демон]";
 string poisonType = "[Ядовитый]";
 string angelType = "[Ангел]";
 int rafaelAuraDamage = 2;
-float electricCageFinishing = 0.4f;
 
 while (bossChoice != ComandChoiseToLucifer && bossChoice != ComandChoiseToRafael)
 {
@@ -51,14 +51,14 @@ while (bossChoice != ComandChoiseToLucifer && bossChoice != ComandChoiseToRafael
     switch (bossChoice)
     {
         case ComandChoiseToLucifer:
-            isbossDemonType = true;
-            isbossPoisonType = true;
+            isBossDemonType = true;
+            isBossPoisonType = true;
             maxBossHP = maxLuciferHP;
             bossHP = maxBossHP;
             break;
 
         case ComandChoiseToRafael:
-            isbossAngelType = true;
+            isBossAngelType = true;
             maxBossHP = maxRafaelHP;
             bossHP = maxBossHP;
             break;
@@ -70,6 +70,8 @@ while (bossChoice != ComandChoiseToLucifer && bossChoice != ComandChoiseToRafael
 
     Console.Clear();
 }
+
+float checkPercentHP = (maxBossHP / numberToCalculateForElectricCage) * electricCagePercentToFinishing;
 
 while (bossHP > lifeForDeath && playerHP > lifeForDeath)
 {
@@ -89,7 +91,6 @@ while (bossHP > lifeForDeath && playerHP > lifeForDeath)
     switch (chooseToSpell)
     {
         case ComandElectricCageSpellNumber:
-            float checkPercentHP = maxBossHP * electricCageFinishing;
 
             if (bossHP <= checkPercentHP)
             {
@@ -108,11 +109,11 @@ while (bossHP > lifeForDeath && playerHP > lifeForDeath)
         case ComandHolyRaySpellNumber:
             bossHP -= holyRayDamage+ stacksInElectricRay;
 
-            if (isbossDemonType)
+            if (isBossDemonType)
             {
                 bossHP -= holyRayDamage + stacksInElectricRay;
             }
-            else if (isbossAngelType)
+            else if (isBossAngelType)
             { 
                 playerHP -= holyRayDamageToPlayer;
             }
@@ -127,9 +128,9 @@ while (bossHP > lifeForDeath && playerHP > lifeForDeath)
         case ComandRainOfPoisonArrowsSpellNumber:
             bossHP -= rainOfPoisonArrowsDamage + stacksInElectricRay;
 
-            if (isbossPoisonType == false)
+            if (isBossPoisonType == false)
             {
-                ispoisonAttackToBoss = true;
+                isPoisonAttackToBoss = true;
             }
 
             break;
@@ -144,23 +145,23 @@ while (bossHP > lifeForDeath && playerHP > lifeForDeath)
             break;
     }
 
-    if (isbossDemonType)
+    if (isBossDemonType)
     {
         playerHP -= rainOfPoisonArrowsDamage;
-        ispoisonAttackToPlayer = true;
+        isPoisonAttackToPlayer = true;
     }
-    else if (isbossAngelType)
+    else if (isBossAngelType)
     {
         playerHP -= rafaelAuraDamage;
         bossHP = maxBossHP;
     }  
 
-    if (ispoisonAttackToBoss)
+    if (isPoisonAttackToBoss)
     {
         bossHP -= rainOfPoisonArrowsTimeDamage + stacksInElectricRay;
     }
     
-    if (ispoisonAttackToPlayer)
+    if (isPoisonAttackToPlayer)
     {
         playerHP -= rainOfPoisonArrowsTimeDamage;
     }
